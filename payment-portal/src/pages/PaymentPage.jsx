@@ -136,6 +136,8 @@ export default function PaymentPage() {
 
                     setPaymentData({
 
+                        appId,
+
                         paymentTitle:
 
                             paymentType === "demo"
