@@ -1,7 +1,7 @@
 import { useState } from "react";
-import {doc,updateDoc} from "firebase/firestore";
-import {db} from "../firebase";
-import {useNavigate} from "react-router-dom";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../firebase";
+import { useNavigate } from "react-router-dom";
 
 export default function PaymentCard({
 
@@ -11,7 +11,7 @@ export default function PaymentCard({
 
     const [loading, setLoading] = useState(false);
 
-    const navigate = useNavigate();    
+    const navigate = useNavigate();
 
     return (
 
@@ -222,40 +222,40 @@ export default function PaymentCard({
 
                 onClick={async () => {
 
-    try {
+                    try {
 
-        setLoading(true);
+                        setLoading(true);
 
-        const docRef =
-            doc(
-                db,
-                "applications",
-                paymentData.appId
-            );
+                        const docRef =
+                            doc(
+                                db,
+                                "applications",
+                                paymentData.appId
+                            );
 
-        await updateDoc(docRef, {
+                        await updateDoc(docRef, {
 
-            status: "demo_booked",
+                            status: "demo_booked",
 
-            demoPaymentPaid: true,
+                            demoPaymentPaid: true,
 
-            demoBookedAt:
-                new Date()
-        });
+                            demoBookedAt:
+                                new Date()
+                        });
 
-        setTimeout(() => {
+                        setTimeout(() => {
 
-            navigate("/success");
+                            navigate("/success");
 
-        }, 1200);
+                        }, 1200);
 
-    } catch (e) {
+                    } catch (e) {
 
-        console.error(e);
+                        console.error(e);
 
-        navigate("/failed");
-    }
-}}
+                        navigate("/failed");
+                    }
+                }}
 
                 disabled={loading}
 
