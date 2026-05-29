@@ -1,4 +1,7 @@
 import { useState } from "react";
+import {doc,updateDoc} from "firebase/firestore";
+import {db} from "../firebase";
+import {useNavigate} from "react-router-dom";
 
 export default function PaymentCard({
 
@@ -6,8 +9,9 @@ export default function PaymentCard({
 
 }) {
 
-    const [loading, setLoading] =
-        useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const navigate = useNavigate();    
 
     return (
 
@@ -216,16 +220,42 @@ export default function PaymentCard({
 
             <button
 
-                onClick={() => {
+                onClick={async () => {
 
-                    setLoading(true);
+    try {
 
-                    setTimeout(() => {
+        setLoading(true);
 
-                        setLoading(false);
+        const docRef =
+            doc(
+                db,
+                "applications",
+                paymentData.appId
+            );
 
-                    }, 2500);
-                }}
+        await updateDoc(docRef, {
+
+            status: "demo_booked",
+
+            demoPaymentPaid: true,
+
+            demoBookedAt:
+                new Date()
+        });
+
+        setTimeout(() => {
+
+            navigate("/success");
+
+        }, 1200);
+
+    } catch (e) {
+
+        console.error(e);
+
+        navigate("/failed");
+    }
+}}
 
                 disabled={loading}
 
