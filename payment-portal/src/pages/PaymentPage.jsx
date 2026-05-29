@@ -2,21 +2,87 @@ import Navbar from "../components/Navbar";
 import PaymentCard from "../components/PaymentCard";
 import { useEffect, useState } from "react";
 import LoadingScreen from "../components/LoadingScreen";
+import { useSearchParams } from "react-router-dom";
+
+import { auth } from "../firebase";
 
 export default function PaymentPage() {
 
     const [loading, setLoading] = useState(true);
 
+    const [searchParams] =
+        useSearchParams();
+
+    const [isAuthenticated,
+        setIsAuthenticated] =
+        useState(false);
+
     useEffect(() => {
-        const timer = setTimeout(() => {
+
+    const token =
+        searchParams.get("token");
+
+    const appId =
+        searchParams.get("appId");
+
+    if (!token) {
+
+        console.error(
+            "Missing token"
+        );
+
+        setLoading(false);
+
+        return;
+    }
+
+    console.log(
+        "TOKEN:",
+        token
+    );
+
+    console.log(
+        "APP ID:",
+        appId
+    );
+
+    // TEMP LOGIN SUCCESS
+
+    const timer =
+        setTimeout(() => {
+
+            setIsAuthenticated(true);
+
             setLoading(false);
+
         }, 1200);
 
-        return () => clearTimeout(timer);
-    }, []);
+    return () => clearTimeout(timer);
+
+}, [searchParams]);
 
     if (loading) {
         return <LoadingScreen />;
+    }
+
+    if (!isAuthenticated) {
+
+        return (
+
+            <div
+                className="
+                min-h-screen
+                flex
+                items-center
+                justify-center
+                text-white
+            "
+            >
+
+                Authentication Failed
+
+            </div>
+        );
     }
 
     return (
