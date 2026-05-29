@@ -251,7 +251,12 @@ export default function PaymentCard({
 
                     } catch (e) {
 
-                        console.error(e);
+                        console.error(
+                            "PAYMENT ERROR:",
+                            e
+                        );
+
+                        alert(e.message);
 
                         navigate("/failed");
                     }
