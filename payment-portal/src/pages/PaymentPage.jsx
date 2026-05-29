@@ -42,6 +42,9 @@ export default function PaymentPage() {
         const appId =
             searchParams.get("appId");
 
+        const paymentType =
+            searchParams.get("type");
+
         if (!token) {
 
             console.error(
@@ -105,17 +108,41 @@ export default function PaymentPage() {
                     const app =
                         snapshot.data();
 
-                    const tuitionFee =
-                        app.finalPrice || 0;
+                    let tuitionFee = 0;
 
-                    const platformFee =
-                        100;
+                    let platformFee = 0;
 
-                    const total =
-                        tuitionFee +
-                        platformFee;
+                    let total = 0;
+
+                    if (paymentType === "demo") {
+
+                        tuitionFee = 0;
+
+                        platformFee = 100;
+
+                        total = 100;
+
+                    } else {
+
+                        tuitionFee =
+                            app.finalPrice || 0;
+
+                        platformFee = 100;
+
+                        total =
+                            tuitionFee +
+                            platformFee;
+                    }
 
                     setPaymentData({
+
+                        paymentTitle:
+
+                            paymentType === "demo"
+
+                                ? "Demo Session Fee"
+
+                                : "Tuition Payment",
 
                         invoiceId:
                             `MT-${appId
@@ -291,7 +318,7 @@ export default function PaymentPage() {
 
                             Fast & Secure
                             <br />
-                            Tuition Payments
+                            {paymentData.paymentTitle}
 
                         </h1>
 
